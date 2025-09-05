@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portafolio de Yury">
+  <meta name="keywords" content="portafolio, desarrollo web, proyectos, contacto">
+  <title>Portafolio Personal</title>
+</head>
+<body>
+  <header>
+    <h1>¡Hola a todos!</h1>
+    <nav>
+      <ul>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="#multimedia">Multimedia</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- SOBRE MÍ -->
+    <section id="sobre-mi">
+      <h2>Sobre mí</h2>
+      <p>Hola, soy Yury, desarrolladora web y creadora de contenido.</p>
+    </section>
+
+    <!-- FORMULARIO DE CONTACTO -->
+    <section id="contacto">
+      <h2>Formulario de Contacto</h2>
+      <form action="#" method="post">
+        <label for="nombre">Nombre completo:</label><br>
+        <input type="text" id="nombre" name="nombre" required minlength="3" placeholder="Ej: Juan Pérez">
+        <br><br>
+
+        <label for="email">Correo electrónico:</label><br>
+        <input type="email" id="email" name="email" required placeholder="tucorreo@ejemplo.com">
+        <br><br>
+
+        <label for="telefono">Teléfono:</label><br>
+        <input type="tel" id="telefono" name="telefono" 
+               pattern="\\+?[0-9\\-\\s]{7,15}" 
+               placeholder="+57 300 123 4567">
+        <br><br>
+
+        <label for="asunto">Asunto:</label><br>
+        <select id="asunto" name="asunto" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="consulta">Consulta</option>
+          <option value="cotizacion">Cotización</option>
+          <option value="soporte">Soporte</option>
+        </select>
+        <br><br>
+
+        <label for="mensaje">Mensaje:</label><br>
+        <textarea id="mensaje" name="mensaje" required minlength="10" rows="5" placeholder="Escribe tu mensaje aquí..."></textarea>
+        <br><br>
+
+        <label>
+          <input type="checkbox" name="terminos" required>
+          Acepto la política de privacidad
+        </label>
+        <br><br>
+
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog">
+      <h2>Blog</h2>
+      <article>
+        <h3>Mi primer artículo</h3>
+        <p>Este es un ejemplo de artículo en mi blog personal.</p>
+        <img src="imagen1.jpeg" alt="Imagen ilustrativa">
+      </article>
+    </section>
+
+    <!-- MULTIMEDIA -->
+    <section id="multimedia">
+      <h2>Multimedia</h2>
+      <video controls width="320">
+        <source src="video1.mp4" type="video/mp4">
+        Tu navegador no soporta la reproducción de video.
+      </video>
+      <audio controls>
+        <source src="audio1.mp3" type="audio/mp3">
+        Tu navegador no soporta la reproducción de audio.
+      </audio>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <section id="productos" aria-labelledby="titulo-productos">
+      <h2 id="titulo-productos">Productos</h2>
+      <p>Ejemplo de tabla con acción para agregar al carrito.</p>
+
+      <table>
+        <caption>Catálogo</caption>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PRD-001</td>
+            <td class="prod-name">Curso HTML</td>
+            <td class="prod-price" data-price="89000">$89.000</td>
+            <td>Disponible</td>
+            <td><button type="button" class="add-to-cart">Agregar</button></td>
+          </tr>
+          <tr>
+            <td>PRD-002</td>
+            <td class="prod-name">Curso CSS</td>
+            <td class="prod-price" data-price="99000">$99.000</td>
+            <td>Disponible</td>
+            <td><button type="button" class="add-to-cart">Agregar</button></td>
+          </tr>
+          <tr>
+            <td>PRD-003</td>
+            <td class="prod-name">Curso JS</td>
+            <td class="prod-price" data-price="129000">$129.000</td>
+            <td>Agotado</td>
+            <td><button type="button" class="add-to-cart" disabled>Agregar</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Carrito -->
+      <section aria-labelledby="carrito-titulo" style="margin-top:1rem">
+        <h3 id="carrito-titulo">Carrito</h3>
+        <ul id="carrito-lista" aria-live="polite"></ul>
+        <p>Total: <strong id="carrito-total" data-total="0">$0</strong></p>
+        <button type="button" id="vaciar-carrito">Vaciar carrito</button>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <p>2025 Portafolio de Yury</p>
+  </footer>
+
+  <!-- SCRIPT DEL CARRITO -->
+  <script>
+    // Función para formatear precios en COP (Colombia)
+    function formatoCOP(valor) {
+      try {
+        return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(valor);
+      } catch {
+        return '$' + valor.toFixed(0);
+      }
+    }
+
+    // Selección de elementos del DOM
+    const botones = document.querySelectorAll('.add-to-cart');
+    const lista = document.querySelector('#carrito-lista');
+    const totalElemento = document.querySelector('#carrito-total');
+    const btnVaciar = document.querySelector('#vaciar-carrito');
+
+    let total = 0;
+
+    // Agregar producto al carrito
+    botones.forEach(boton => {
+      boton.addEventListener('click', () => {
+        const fila = boton.closest('tr'); // fila donde está el producto
+        const nombre = fila.querySelector('.prod-name').textContent;
+        const precio = parseInt(fila.querySelector('.prod-price').dataset.price);
+
+        // Crear elemento de lista
+        const item = document.createElement('li');
+        item.textContent = `${nombre} - ${formatoCOP(precio)}`;
+        lista.appendChild(item);
+
+        // Actualizar total
+        total += precio;
+        totalElemento.textContent = formatoCOP(total);
+        totalElemento.dataset.total = total;
+      });
+    });
+
+    // Vaciar carrito
+    btnVaciar.addEventListener('click', () => {
+      lista.innerHTML = '';
+      total = 0;
+      totalElemento.textContent = formatoCOP(total);
+      totalElemento.dataset.total = total;
+    });
+  </script>
+</body>
+</html>
